@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Amor</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff5f5;
+            color: #5a3e36;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Saudação Personalizada */
+        #saudacao {
+            text-align: center;
+            padding: 4rem 1rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+            background-image: url('https://images.unsplash.com/photo-1526047932273-341f2a76384f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        #saudacao::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: -1;
+        }
+
+        #saudacao h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        #saudacao p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Galeria de Fotos */
+        #galeria {
+            padding: 4rem 1rem;
+            text-align: center;
+            background-color: #fff9f9;
+            position: relative;
+            z-index: 10;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #galeria h2 {
+            font-size: 2rem;
+            color: #d23669;
+            margin-bottom: 2rem;
+        }
+
+        .fotos-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .foto {
+            width: 300px;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .foto:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .foto:hover img {
+            transform: scale(1.1);
+        }
+
+        .foto::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .foto:hover::after {
+            left: 100%;
+        }
+
+        /* Modal para foto ampliada */
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+            opacity: 0;
+            transition: opacity 0.3s;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            transition: all 0.3s ease-out;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+        }
+
+        .modal.show .modal-content {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .close:hover {
+            color: #ff6b81;
+        }
+
+        /* Mensagens Românticas */
+        #mensagens {
+            padding: 4rem 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #fff5f5, #ffecec);
+            position: relative;
+            z-index: 10;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #mensagens h2 {
+            font-size: 2rem;
+            color: #d23669;
+            margin-bottom: 2rem;
+        }
+
+        .mensagens-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .mensagem {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .mensagem:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .mensagem::before {
+            content: """;
+            font-size: 4rem;
+            color: #ffb6c1;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            opacity: 0.3;
+        }
+
+        .mensagem p {
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* Contador Regressivo */
+        #contador {
+            padding: 4rem 1rem;
+            text-align: center;
+            background-color: #fff;
+            position: relative;
+            z-index: 10;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #contador h2 {
+            font-size: 2rem;
+            color: #d23669;
+            margin-bottom: 2rem;
+        }
+
+        .contador-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contador-item {
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .contador-item span:first-child {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .contador-item span:last-child {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Livro de Recados */
+        #recados {
+            padding: 4rem 1rem;
+            text-align: center;
+            background-color: #fff;
+            position: relative;
+            z-index: 10;
+        }
+
+        #recados h2 {
+            font-size: 2rem;
+            color: #d23669;
+            margin-bottom: 2rem;
+        }
+
+        #form-recado {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #form-recado textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            padding: 15px;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            resize: none;
+        }
+
+        #form-recado button {
+            background: linear-gradient(135deg, #ff69b4, #d23669);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        #form-recado button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #lista-recados {
+            max-width: 800px;
+            margin: 30px auto;
+            text-align: left;
+        }
+
+        .recado {
+            background: #fff9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .recado::before {
+            content: '"';
+            font-size: 4rem;
+            color: #ffb6c1;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            opacity: 0.3;
+        }
+
+        /* Rodapé */
+        footer {
+            background: linear-gradient(135deg, #ff69b4, #d23669);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Elementos Decorativos - Corações de fundo */
+        .coracao-fundo {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            transform: rotate(45deg);
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .coracao-fundo::before, .coracao-fundo::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .coracao-fundo::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .coracao-fundo::after {
+            top: 0;
+            left: -10px;
+        }
+
+        /* Corações no cabeçalho */
+        .coracao {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            transform: rotate(45deg);
+            animation: float 4s ease-in-out infinite;
+            opacity: 0.7;
+            z-index: 11;
+        }
+
+        .coracao::before, .coracao::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b81;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .coracao::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .coracao::after {
+            top: 0;
+            left: -10px;
+        }
+
+        /* Botão Voltar ao Topo */
+        #btn-topo {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff69b4, #d23669);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 99;
+        }
+
+        #btn-topo.visible {
+            opacity: 1;
+        }
+
+        /* Controle de Música */
+        #music-control {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #ff69b4, #d23669);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 99;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(-20px); }
+            100% { transform: rotate(45deg) translateY(0); }
+        }
+
+        @keyframes floatHorizontal {
+            0% { transform: rotate(45deg) translateX(0); }
+            50% { transform: rotate(45deg) translateX(-20px); }
+            100% { transform: rotate(45deg) translateX(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .contador-container {
+                flex-wrap: wrap;
+            }
+            
+            .foto, .mensagem {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            #saudacao h2, #galeria h2, #mensagens h2, #contador h2, #recados h2 {
+                font-size: 1.5rem;
+            }
+            
+            .contador-item {
+                min-width: 70px;
+                padding: 1rem;
+            }
+            
+            .contador-item span:first-child {
+                font-size: 1.8rem;
+            }
+            
+            #form-recado textarea {
+                width: 90%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+</head>
+<body>
+    <!-- Corações de fundo -->
+    <div id="coracoes-fundo"></div>
+    
+    <!-- Canvas para confete -->
+    <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;pointer-events:none;"></canvas>
+
+    <!-- Controle de música -->
+    <div id="music-control" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <h1>Para o Amor da Minha Vida</h1>
+        <div class="coracao" style="top: 20%; left: 15%;"></div>
+        <div class="coracao" style="top: 30%; right: 10%; animation-delay: 0.5s;"></div>
+        <div class="coracao" style="bottom: 20%; left: 20%; animation-delay: 1s;"></div>
+        <div class="coracao" style="bottom: 30%; right: 15%; animation-delay: 1.5s;"></div>
+    </header>
+
+    <section id="saudacao">
+        <h2>Meu Amor,</h2>
+        <p id="mensagem-amor"></p>
+    </section>
+
+    <section id="galeria">
+        <h2>Nossas Memórias</h2>
+        <div class="fotos-container">
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor1.jpg" alt="Nossa foto 1">
+            </div>
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor2.jpg" alt="Nossa foto 2">
+            </div>
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor3.jpg" alt="Nossa foto 3">
+            </div>
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor4.jpg" alt="Nossa foto 4">
+            </div>
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor5.jpg" alt="Nossa foto 5">
+            </div>
+            <div class="foto" onclick="abrirModal('')">
+                <img src="amor6.jpg" alt="Nossa foto 6">
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para foto ampliada -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <img class="modal-content" id="imgAmpliada">
+    </div>
+
+    <section id="mensagens">
+        <h2>Mensagens do Coração</h2>
+        <div class="mensagens-container">
+            <div class="mensagem">
+                <p>"Se eu tivesse que escolher entre te amar e respirar, eu usaria meu último suspiro para dizer que te amo."</p>
+            </div>
+            <div class="mensagem">
+                <p>"Você é o meu hoje e todos os meus amanhãs."</p>
+            </div>
+            <div class="mensagem">
+                <p>"Amar você não é uma escolha, é tão natural quanto o meu coração bater."</p>
+            </div>
+            <div class="mensagem">
+                <p>"Em um mundo de pessoas passageiras, você é o meu para sempre."</p>
+            </div>
+            <div class="mensagem">
+                <p>"Se o amor fosse um conto de fadas, nós seríamos o final feliz."</p>
+            </div>
+            <div class="mensagem">
+                <p>"Você é a razão pela qual eu acredito no amor."</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contador">
+        <h2>Contagem Regressiva para o Dia dos Namorados</h2>
+        <div class="contador-container">
+            <div class="contador-item">
+                <span id="dias">00</span>
+                <span>Dias</span>
+            </div>
+            <div class="contador-item" style="animation-delay: 0.2s;">
+                <span id="horas">00</span>
+                <span>Horas</span>
+            </div>
+            <div class="contador-item" style="animation-delay: 0.4s;">
+                <span id="minutos">00</span>
+                <span>Minutos</span>
+            </div>
+            <div class="contador-item" style="animation-delay: 0.6s;">
+                <span id="segundos">00</span>
+                <span>Segundos</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="recados">
+        <h2>Deixe um Recadinho</h2>
+        <form id="form-recado">
+            <textarea placeholder="Escreva sua mensagem de amor..." required></textarea>
+            <button type="submit">Enviar <i class="fas fa-heart"></i></button>
+        </form>
+        <div id="lista-recados"></div>
+    </section>
+
+    <footer>
+        <p>Feito com <i class="fas fa-heart" style="color: #ff6b81;"></i> para você, o amor da minha vida</p>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <div id="btn-topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Contador regressivo para o Dia dos Namorados (12 de junho)
+        function atualizarContador() {
+            const agora = new Date();
+            let diaDosNamorados = new Date(agora.getFullYear(), 5, 12); // 5 representa junho (0-11)
+            
+            // Se já passou o Dia dos Namorados deste ano, calcula para o próximo ano
+            if (agora > diaDosNamorados) {
+                diaDosNamorados = new Date(agora.getFullYear() + 1, 5, 12);
+            }
+            
+            const diferenca = diaDosNamorados - agora;
+            
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+            
+            document.getElementById('dias').textContent = dias.toString().padStart(2, '0');
+            document.getElementById('horas').textContent = horas.toString().padStart(2, '0');
+            document.getElementById('minutos').textContent = minutos.toString().padStart(2, '0');
+            document.getElementById('segundos').textContent = segundos.toString().padStart(2, '0');
+        }
+        
+        // Atualizar o contador a cada segundo
+        setInterval(atualizarContador, 1000);
+        atualizarContador(); // Chamar imediatamente para evitar atraso inicial
+
+        // Criar corações de fundo
+        function criarCoracoes() {
+            const container = document.getElementById('coracoes-fundo');
+            const colors = ['#ff6b81', '#ff8fab', '#ffb3c6', '#ffccd5', '#ff758f'];
+            
+            for (let i = 0; i < 30; i++) {
+                const coracao = document.createElement('div');
+                coracao.className = 'coracao-fundo';
+                
+                // Posição aleatória
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Tamanho aleatório
+                const size = Math.random() * 20 + 10;
+                
+                // Cor aleatória
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Atraso de animação aleatório
+                const delay = Math.random() * 5;
+                
+                // Duração de animação aleatória
+                const duration = Math.random() * 10 + 5;
+                
+                // Tipo de animação (vertical ou horizontal)
+                const animationType = Math.random() > 0.5 ? 'float' : 'floatHorizontal';
+                
+                coracao.style.left = `${left}%`;
+                coracao.style.top = `${top}%`;
+                coracao.style.width = `${size}px`;
+                coracao.style.height = `${size}px`;
+                coracao.style.backgroundColor = color;
+                coracao.style.animation = `${animationType} ${duration}s ease-in-out ${delay}s infinite`;
+                coracao.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                // Criar pseudo-elementos
+                coracao.innerHTML = `
+                    <style>
+                        .coracao-fundo:nth-child(${i + 1})::before, 
+                        .coracao-fundo:nth-child(${i + 1})::after {
+                            width: ${size}px;
+                            height: ${size}px;
+                            background-color: ${color};
+                        }
+                        .coracao-fundo:nth-child(${i + 1})::before {
+                            top: -${size/2}px;
+                        }
+                        .coracao-fundo:nth-child(${i + 1})::after {
+                            left: -${size/2}px;
+                        }
+                    </style>
+                `;
+                
+                container.appendChild(coracao);
+            }
+        }
+
+        // Modal para fotos ampliadas
+        function abrirModal(src) {
+            const modal = document.getElementById('myModal');
+            const modalImg = document.getElementById('imgAmpliada');
+            
+            modalImg.src = src;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Fechar modal ao clicar fora da imagem
+            modal.onclick = function(event) {
+                if (event.target === modal) {
+                    fecharModal();
+                }
+            }
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('myModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Efeito de digitação na saudação
+        function typeWriter(elemento, texto, i = 0) {
+            if (i < texto.length) {
+                elemento.innerHTML += texto.charAt(i);
+                i++;
+                setTimeout(() => typeWriter(elemento, texto, i), 50);
+            }
+        }
+
+        // Controle de música
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const control = document.getElementById('music-control');
+            
+            if (music.paused) {
+                music.play();
+                control.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                music.pause();
+                control.innerHTML = '<i class="fas fa-music"></i>';
+            }
+        }
+
+        // Botão voltar ao topo
+        window.onscroll = function() {
+            const btn = document.getElementById('btn-topo');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        };
+
+        // Livro de recados
+        document.getElementById('form-recado').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const textarea = this.querySelector('textarea');
+            const recado = textarea.value.trim();
+            
+            if (recado) {
+                const div = document.createElement('div');
+                div.className = 'recado';
+                div.innerHTML = `<p>${recado}</p>`;
+                document.getElementById('lista-recados').prepend(div);
+                textarea.value = '';
+                
+                // Efeito visual
+                div.style.opacity = '0';
+                div.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    div.style.transition = 'all 0.3s';
+                    div.style.opacity = '1';
+                    div.style.transform = 'translateY(0)';
+                }, 10);
+            }
+        });
+
+        // Efeito de confete no carregamento
+        function lancarConfete() {
+            const confettiSettings = { target: 'confetti-canvas', max: 150 };
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            
+            setTimeout(() => {
+                confetti.clear();
+            }, 3000);
+        }
+
+        // Inicialização quando a página carregar
+        window.onload = function() {
+            criarCoracoes();
+            lancarConfete();
+            
+            const mensagem = "Desde o momento em que nossos caminhos se cruzaram, minha vida ganhou novas cores e significados. Cada dia ao seu lado é uma bênção, cada momento uma memória preciosa que guardo no meu coração. Esta página é um pequeno reflexo do que sinto por você - um amor que cresce a cada dia, como as ondas do mar que nunca param de dançar na praia.";
+            typeWriter(document.getElementById('mensagem-amor'), mensagem);
+        };
+    </script>
+</body>
+</html>
