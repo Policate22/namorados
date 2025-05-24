@@ -310,6 +310,57 @@
             letter-spacing: 1px;
         }
 
+        /* Contador de Meses de Namoro */
+        #meses-namoro {
+            padding: 4rem 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #ffecec, #ffd6e0);
+            position: relative;
+            z-index: 10;
+        }
+
+        #meses-namoro h2 {
+            font-size: 2rem;
+            color: #d23669;
+            margin-bottom: 2rem;
+        }
+
+        .meses-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .meses-item {
+            background: linear-gradient(135deg, #ff69b4, #d23669);
+            color: white;
+            padding: 2rem;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .meses-item span:first-child {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .meses-item span:last-child {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         /* Livro de Recados */
         #recados {
             padding: 4rem 1rem;
@@ -329,6 +380,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #form-recado input {
+            width: 80%;
+            max-width: 400px;
+            padding: 12px 15px;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
         }
 
         #form-recado textarea {
@@ -341,17 +405,19 @@
             margin-bottom: 20px;
             font-family: 'Playfair Display', serif;
             resize: none;
+            font-size: 1rem;
         }
 
         #form-recado button {
             background: linear-gradient(135deg, #ff69b4, #d23669);
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s;
+            font-family: 'Playfair Display', serif;
         }
 
         #form-recado button:hover {
@@ -367,7 +433,7 @@
 
         .recado {
             background: #fff9f9;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 15px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.05);
@@ -383,6 +449,24 @@
             top: -20px;
             left: 10px;
             opacity: 0.3;
+        }
+
+        .recado h3 {
+            margin-top: 0;
+            color: #d23669;
+            font-size: 1.2rem;
+        }
+
+        .recado p {
+            margin-bottom: 0;
+        }
+
+        .recado small {
+            display: block;
+            text-align: right;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 10px;
         }
 
         /* Rodapé */
@@ -502,6 +586,11 @@
             z-index: 99;
         }
 
+        /* Player do YouTube (escondido) */
+        #youtube-player {
+            display: none;
+        }
+
         /* Animações */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -528,13 +617,22 @@
 
         /* Responsividade */
         @media (max-width: 768px) {
-            .contador-container {
+            .contador-container, .meses-container {
                 flex-wrap: wrap;
             }
             
             .foto, .mensagem {
                 width: 100%;
                 max-width: 300px;
+            }
+            
+            .meses-item {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .meses-item span:first-child {
+                font-size: 2.5rem;
             }
             
             .modal-content {
@@ -548,7 +646,7 @@
                 font-size: 1.8rem;
             }
             
-            #saudacao h2, #galeria h2, #mensagens h2, #contador h2, #recados h2 {
+            #saudacao h2, #galeria h2, #mensagens h2, #contador h2, #recados h2, #meses-namoro h2 {
                 font-size: 1.5rem;
             }
             
@@ -561,8 +659,21 @@
                 font-size: 1.8rem;
             }
             
-            #form-recado textarea {
+            #form-recado textarea, #form-recado input {
                 width: 90%;
+            }
+            
+            .meses-item {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .meses-item span:first-child {
+                font-size: 2rem;
+            }
+            
+            .meses-item span:last-child {
+                font-size: 1rem;
             }
         }
     </style>
@@ -577,13 +688,13 @@
     <!-- Canvas para confete -->
     <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;pointer-events:none;"></canvas>
 
+    <!-- Player do YouTube (escondido) -->
+    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/SETK2maosQY?enablejsapi=1&autoplay=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
     <!-- Controle de música -->
     <div id="music-control" onclick="toggleMusic()">
         <i class="fas fa-music"></i>
     </div>
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
 
     <header>
         <h1>Para o Amor da Minha Vida</h1>
@@ -596,6 +707,16 @@
     <section id="saudacao">
         <h2>Meu Amor,</h2>
         <p id="mensagem-amor"></p>
+    </section>
+
+    <section id="meses-namoro">
+        <h2>Nosso Tempo Juntos</h2>
+        <div class="meses-container">
+            <div class="meses-item">
+                <span id="meses-namoro-numero">0</span>
+                <span>Meses</span>
+            </div>
+        </div>
     </section>
 
     <section id="galeria">
@@ -677,7 +798,8 @@
     <section id="recados">
         <h2>Deixe um Recadinho</h2>
         <form id="form-recado">
-            <textarea placeholder="Escreva sua mensagem de amor..." required></textarea>
+            <input type="text" id="nome-recado" placeholder="Seu nome (opcional)">
+            <textarea id="texto-recado" placeholder="Escreva sua mensagem de amor..." required></textarea>
             <button type="submit">Enviar <i class="fas fa-heart"></i></button>
         </form>
         <div id="lista-recados"></div>
@@ -686,13 +808,64 @@
     <footer>
         <p>Feito com <i class="fas fa-heart" style="color: #ff6b81;"></i> para você, o amor da minha vida</p>
     </footer>
-
+ <footer>
+        <p>Inicio Do Namoro <i class="fas fa-heart" style="color: #ff6b81;"></i> Dia 22 Fevereiro 2025</p>
+    </footer>
     <!-- Botão Voltar ao Topo -->
     <div id="btn-topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
         <i class="fas fa-arrow-up"></i>
     </div>
 
     <script>
+        // Variável para controlar o player do YouTube
+        let player;
+        let isPlaying = false;
+
+        // Função para carregar a API do YouTube
+        function loadYouTubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        // Função chamada quando a API do YouTube está pronta
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Quando o player estiver pronto
+        function onPlayerReady(event) {
+            // Pode adicionar configurações adicionais aqui se necessário
+        }
+
+        // Monitorar estado do player
+        function onPlayerStateChange(event) {
+            const control = document.getElementById('music-control');
+            
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                control.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                isPlaying = false;
+                control.innerHTML = '<i class="fas fa-music"></i>';
+            }
+        }
+
+        // Controle de música modificado para o YouTube
+        function toggleMusic() {
+            if (!isPlaying) {
+                player.playVideo();
+            } else {
+                player.pauseVideo();
+            }
+        }
+
         // Contador regressivo para o Dia dos Namorados (12 de junho)
         function atualizarContador() {
             const agora = new Date();
@@ -719,6 +892,30 @@
         // Atualizar o contador a cada segundo
         setInterval(atualizarContador, 1000);
         atualizarContador(); // Chamar imediatamente para evitar atraso inicial
+
+        // Calcular meses de namoro
+        function calcularMesesNamoro() {
+            const dataInicio = new Date('2025-02-22'); // Data de início do namoro
+            const agora = new Date();
+            
+            // Calcular diferença em meses
+            let meses = (agora.getFullYear() - dataInicio.getFullYear()) * 12;
+            meses -= dataInicio.getMonth();
+            meses += agora.getMonth();
+            
+            // Ajustar se ainda não completou o mês
+            if (agora.getDate() < dataInicio.getDate()) {
+                meses--;
+            }
+            
+            // Garantir que não seja negativo (caso a data seja no futuro)
+            meses = Math.max(0, meses);
+            
+            document.getElementById('meses-namoro-numero').textContent = meses;
+        }
+        
+        // Chamar a função para calcular os meses de namoro
+        calcularMesesNamoro();
 
         // Criar corações de fundo
         function criarCoracoes() {
@@ -810,20 +1007,6 @@
             }
         }
 
-        // Controle de música
-        function toggleMusic() {
-            const music = document.getElementById('bg-music');
-            const control = document.getElementById('music-control');
-            
-            if (music.paused) {
-                music.play();
-                control.innerHTML = '<i class="fas fa-pause"></i>';
-            } else {
-                music.pause();
-                control.innerHTML = '<i class="fas fa-music"></i>';
-            }
-        }
-
         // Botão voltar ao topo
         window.onscroll = function() {
             const btn = document.getElementById('btn-topo');
@@ -834,27 +1017,91 @@
             }
         };
 
-        // Livro de recados
+        // Livro de recados - usando localStorage para persistência
+        function carregarRecados() {
+            const recados = JSON.parse(localStorage.getItem('recados')) || [];
+            const listaRecados = document.getElementById('lista-recados');
+            listaRecados.innerHTML = '';
+            
+            // Ordenar recados do mais recente para o mais antigo
+            recados.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            recados.forEach(recado => {
+                adicionarRecadoDOM(recado.nome, recado.texto, recado.data);
+            });
+        }
+
+        function adicionarRecadoDOM(nome, texto, data) {
+            const div = document.createElement('div');
+            div.className = 'recado';
+            
+            const nomeExibicao = nome || 'Anônimo';
+            const dataFormatada = new Date(data).toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            div.innerHTML = `
+                ${nome ? `<h3>${nome}</h3>` : ''}
+                <p>${texto}</p>
+                <small>${dataFormatada}</small>
+            `;
+            
+            document.getElementById('lista-recados').appendChild(div);
+            
+            // Efeito visual
+            div.style.opacity = '0';
+            div.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                div.style.transition = 'all 0.3s';
+                div.style.opacity = '1';
+                div.style.transform = 'translateY(0)';
+            }, 10);
+        }
+
         document.getElementById('form-recado').addEventListener('submit', function(e) {
             e.preventDefault();
-            const textarea = this.querySelector('textarea');
-            const recado = textarea.value.trim();
+            const nome = document.getElementById('nome-recado').value.trim();
+            const texto = document.getElementById('texto-recado').value.trim();
             
-            if (recado) {
-                const div = document.createElement('div');
-                div.className = 'recado';
-                div.innerHTML = `<p>${recado}</p>`;
-                document.getElementById('lista-recados').prepend(div);
-                textarea.value = '';
+            if (texto) {
+                // Criar objeto do recado
+                const recado = {
+                    nome: nome,
+                    texto: texto,
+                    data: new Date().toISOString()
+                };
                 
-                // Efeito visual
-                div.style.opacity = '0';
-                div.style.transform = 'translateY(20px)';
+                // Carregar recados existentes
+                const recados = JSON.parse(localStorage.getItem('recados')) || [];
+                
+                // Adicionar novo recado
+                recados.push(recado);
+                
+                // Salvar no localStorage
+                localStorage.setItem('recados', JSON.stringify(recados));
+                
+                // Adicionar ao DOM
+                adicionarRecadoDOM(nome, texto, recado.data);
+                
+                // Limpar formulário
+                document.getElementById('texto-recado').value = '';
+                document.getElementById('nome-recado').value = '';
+                
+                // Efeito de confete
+                lancarConfete();
+                
+                // Rolagem suave para o novo recado
                 setTimeout(() => {
-                    div.style.transition = 'all 0.3s';
-                    div.style.opacity = '1';
-                    div.style.transform = 'translateY(0)';
-                }, 10);
+                    const listaRecados = document.getElementById('lista-recados');
+                    listaRecados.scrollTo({
+                        top: listaRecados.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             }
         });
 
@@ -873,9 +1120,13 @@
         window.onload = function() {
             criarCoracoes();
             lancarConfete();
+            loadYouTubeAPI(); // Carrega a API do YouTube
             
             const mensagem = "Desde o momento em que nossos caminhos se cruzaram, minha vida ganhou novas cores e significados. Cada dia ao seu lado é uma bênção, cada momento uma memória preciosa que guardo no meu coração. Esta página é um pequeno reflexo do que sinto por você - um amor que cresce a cada dia, como as ondas do mar que nunca param de dançar na praia.";
             typeWriter(document.getElementById('mensagem-amor'), mensagem);
+            
+            // Carregar recados salvos
+            carregarRecados();
         };
     </script>
 </body>
